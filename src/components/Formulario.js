@@ -1,6 +1,7 @@
 import React, { Fragment, useState } from 'react'
+import uuid from 'uuid/v4';
 
-const Formulario = () => {
+const Formulario = ({ createAppointment }) => {
 
   const [appointment, updateAppointment] = useState({
     pet: '',
@@ -9,6 +10,8 @@ const Formulario = () => {
     time: '',
     symptoms: ''
   });
+
+  const [error, updateError] = useState(false);
 
   const handleChange = (event) => {
     updateAppointment({
@@ -19,10 +22,49 @@ const Formulario = () => {
 
   const { pet, owner, date, time, symptoms } = appointment;
 
+  const submitAppointment = (event) => {
+    event.preventDefault();
+
+    if (pet?.trim() === '' ||
+      owner?.trim() === '' ||
+      date?.trim() === '' ||
+      time?.trim() === '' ||
+      symptoms?.trim === '') {
+        updateError(true);
+        return;
+    }
+
+    updateError(false);
+
+    appointment.id = uuid();
+    
+    createAppointment(appointment);
+
+    updateAppointment({
+      pet: '',
+      owner: '',
+      date: '',
+      time: '',
+      symptoms: ''
+    });
+
+  }
+
   return (
     <Fragment>
       <h2>Crear cita</h2>
-      <form>
+
+      {
+        error ?
+        <p className="alerta-error">
+          Todos los campos son obligatorios
+        </p>
+        : null
+      }
+
+      <form
+        onSubmit={submitAppointment}
+      >
         <label>Nombre de Mascota</label>
         <input
           type="text"
