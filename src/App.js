@@ -1,5 +1,7 @@
-import React, { Fragment, useState }  from 'react';
+import React, { Fragment, useState } from 'react';
 import Formulario from './components/Formulario';
+import Cita from './components/Cita';
+
 
 function App() {
   const [appointments, saveAppointments] = useState([]);
@@ -9,6 +11,11 @@ function App() {
       ...appointments,
       appointment
     ]);
+  };
+
+  const deleteAppointment = id => {
+    const newAppointments = appointments.filter(appointment => appointment?.id !== id);
+    saveAppointments(newAppointments);
   };
 
   return (
@@ -22,7 +29,14 @@ function App() {
             />
           </div>
           <div className="one-half column">
-            2
+            <h2>Administra tus citas</h2>
+            {appointments.map(cita => (
+              <Cita
+                key={cita?.id}
+                cita={cita}
+                deleteAppointment={deleteAppointment}
+              />
+            ))}
           </div>
         </div>
       </div>

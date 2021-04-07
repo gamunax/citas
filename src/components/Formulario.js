@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from 'react'
-import uuid from 'uuid/v4';
+import {v4 as uuidv4} from 'uuid';
 
 const Formulario = ({ createAppointment }) => {
 
@@ -36,7 +36,7 @@ const Formulario = ({ createAppointment }) => {
 
     updateError(false);
 
-    appointment.id = uuid();
+    appointment.id = uuidv4();
     
     createAppointment(appointment);
 
